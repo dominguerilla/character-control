@@ -10,7 +10,10 @@ public class GravitySphere : GravitySource
     [SerializeField, Min(0f)]
     float outerRadius = 20f, outerFalloffRadius = 30f;
 
-    float outerFalloffFactor;
+    [SerializeField, Min(0f)]
+    float innerRadius = 5f, innerFalloffRadius = 1f;
+
+    float innerFalloffFactor, outerFalloffFactor;
 
     private void Awake()
     {
@@ -19,30 +22,47 @@ public class GravitySphere : GravitySource
 
     private void OnValidate()
     {
+        innerFalloffRadius = Mathf.Max(innerFalloffRadius, 0f); //TODO: Is this redundant? I would've thought the 'Min' attribute would take care of this
+        innerRadius = Mathf.Max(innerRadius, innerFalloffRadius);
+        outerRadius = Mathf.Max(outerRadius, innerRadius);
         outerFalloffRadius = Mathf.Max(outerRadius, outerFalloffRadius);
+
         outerFalloffFactor = 1f / (outerFalloffRadius - outerRadius);
+        innerFalloffFactor = 1f / (innerRadius - innerFalloffRadius);
     }
 
     public override Vector3 GetGravity(Vector3 position)
     {
         Vector3 gravityDirection = transform.position - position;
         float distance = gravityDirection.magnitude;
-        if ( distance > outerFalloffRadius)
+        if ( distance > outerFalloffRadius || distance < innerFalloffRadius)
         {
             return Vector3.zero;
         }
         float g = gravity / distance;
         if(distance > outerRadius)
         {
-            g *= 1 - (distance - outerRadius) * outerFalloffFactor;
+            g *= 1f - (distance - outerRadius) * outerFalloffFactor;
+        }else if (distance < innerRadius)
+        {
+            g *= 1f - (innerRadius - distance) * innerFalloffFactor;
         }
         return gravityDirection * g;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Vector3 p = transform.position;
+        if(innerFalloffRadius > 0f && innerFalloffRadius < innerRadius)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(p, innerFalloffRadius);
+        }
         Gizmos.color = Color.yellow;
+        if(innerRadius > 0f && innerRadius < outerRadius)
+        {
+            Gizmos.DrawWireSphere(p, innerRadius);
+        }
         Gizmos.DrawWireSphere(p, outerRadius);
 
         if(outerFalloffRadius > outerRadius)
