@@ -1579,6 +1579,8 @@ MonoBehaviour:
   boundingVector: {x: 10, y: 10, z: 10}
   innerRadius: 2
   innerFalloffDistance: 4
+  outerDistance: 3
+  outerFalloffDistance: 6
 --- !u!64 &1927050794
 MeshCollider:
   m_ObjectHideFlags: 0
