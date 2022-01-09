@@ -37,7 +37,7 @@ public class GravityBox : GravitySource
         outerFalloffFactor = 1f / (outerFalloffDistance - outerDistance);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected ()
     {
         Gizmos.color = Color.red;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one); // Why not use transform.localScale for this?
@@ -143,6 +143,59 @@ public class GravityBox : GravitySource
     {
         position = transform.InverseTransformDirection(position - transform.position);
         Vector3 gravityVector = Vector3.zero;
+
+        int outsideFaceCount = 0;
+
+        // Check if outside right or left face
+        if (position.x > boundingVector.x)
+        {
+            gravityVector.x = boundingVector.x - position.x;
+            outsideFaceCount += 1;
+        }else if(position.x < -boundingVector.x)
+        {
+            gravityVector.x = -boundingVector.x - position.x;
+            outsideFaceCount += 1;
+        }
+
+        // Check if outside up or down face
+        if(position.y > boundingVector.y)
+        {
+            gravityVector.y = boundingVector.y - position.y;
+            outsideFaceCount += 1;
+        }else if(position.y < -boundingVector.y)
+        {
+            gravityVector.y = -boundingVector.y - position.y;
+            outsideFaceCount += 1;
+        }
+
+        // Check if outside forward or toward face
+        if(position.z > boundingVector.z)
+        {
+            gravityVector.z = boundingVector.z - position.z;
+            outsideFaceCount += 1;
+        }else if(position.z < -boundingVector.z)
+        {
+            gravityVector.z = -boundingVector.z - position.z;
+            outsideFaceCount += 1;
+        }
+
+        if(outsideFaceCount > 0)
+        {
+            float distance = outsideFaceCount == 1 ? 
+                Mathf.Abs(gravityVector.x + gravityVector.y + gravityVector.z) : 
+                gravityVector.magnitude;
+            if(distance > outerFalloffDistance)
+            {
+                return Vector3.zero;
+            }
+            float g = gravity / distance;
+            if (distance > outerDistance)
+            {
+                g *= 1f - (distance - outerDistance) * outerFalloffFactor;
+            }
+            return transform.TransformDirection(g * gravityVector);
+        }
+
         Vector3 distances;
         distances.x = boundingVector.x - Mathf.Abs(position.x);
         distances.y = boundingVector.y - Mathf.Abs(position.y);
