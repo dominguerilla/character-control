@@ -1093,7 +1093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3379538026426753446, guid: 471b662c5eb0fbd409866efe5c402340, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.75
+      value: 8.75
       objectReference: {fileID: 0}
     - target: {fileID: 3379538026426753446, guid: 471b662c5eb0fbd409866efe5c402340, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1575,7 +1575,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc4b84738c7da444a296f7b4a76c64b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundingVector: {x: 7.5, y: 7.5, z: 7.5}
+  gravity: -9.81
+  boundingVector: {x: 10, y: 10, z: 10}
+  innerRadius: 2
+  innerFalloffDistance: 4
 --- !u!64 &1927050794
 MeshCollider:
   m_ObjectHideFlags: 0
