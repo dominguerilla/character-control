@@ -25,6 +25,7 @@ public class ActionRegister : MonoBehaviour
         {
             action.Register(controls);
         }
+        controls.Gameplay.Enable();
     }
 
     private void OnDisable()

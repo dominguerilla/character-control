@@ -1,0 +1,4 @@
+repository "gunsword-motorcycle@studio_silog@cloud"
+  path "/"
+    br "/main"
+    co "/main"
