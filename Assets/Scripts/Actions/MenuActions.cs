@@ -30,8 +30,13 @@ public class MenuActions : PlayerAction
         if (isRegistered)
         {
             base.Unregister();
-            controls.Gameplay.Menu1.performed -= TogglePause;
-            controls.UI.Menu1.performed -= TogglePause;
+
+            // Sometimes, the controls object is destroyed before Unregister() is called.
+            if(controls != null)
+            {
+                controls.Gameplay.Menu1.performed -= TogglePause;
+                controls.UI.Menu1.performed -= TogglePause;
+            }
         }
     }
 
@@ -74,10 +79,4 @@ public class MenuActions : PlayerAction
     {
         canPause = value;
     }
-
-    private void OnDestroy()
-    {
-        Unregister();
-    }
-    
 }
