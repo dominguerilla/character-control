@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// TODO: Refactor this as a PlayerAction. Right now, it needs its own PlayerInput.
+/// </summary>
 [RequireComponent(typeof(Camera), typeof(PlayerInput))]
 public class OrbitingCamera : MonoBehaviour
 {

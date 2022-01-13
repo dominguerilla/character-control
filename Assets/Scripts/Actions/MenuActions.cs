@@ -39,13 +39,17 @@ public class MenuActions : PlayerAction
             }
         }
     }
+    void OnMenu1()
+    {
+        TogglePause();
+    }
 
     public void TogglePause(InputAction.CallbackContext ctx)
     {
         if (!isPaused && !canPause) return;
-
         isPaused = !isPaused;
-        Time.timeScale = isPaused ? 0 : 1;
+        // TODO: This causes problems for...something. Not sure if it's the OrbitingCamera or the MovingSphere script.
+        // Time.timeScale = isPaused ? 0 : 1;
 
         pauseUI.SetActive(isPaused);
 

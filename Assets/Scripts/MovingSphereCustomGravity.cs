@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// TODO: Refactor this as a PlayerAction.
+/// </summary>
 public class MovingSphereCustomGravity : MonoBehaviour
 {
 
